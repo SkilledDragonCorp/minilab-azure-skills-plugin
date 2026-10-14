@@ -14,7 +14,11 @@ VENDOR="$ROOT/vendor/azure-skills"
 CLAUDE_CODE_PKG="@anthropic-ai/claude-code@2.1.296"
 MARKETPLACE_NAME="azure-skills"
 WORKDIR="${TMPDIR:-/tmp}/azure-skills-e2e-$$"
-mkdir -p "$WORKDIR"
+# Isolate Claude Code config so a prior user marketplace declaration cannot
+# short-circuit "marketplace add" and leave --available empty (local pollution).
+# Upstream CI is already a clean runner HOME; this keeps local keyless E2E equivalent.
+ISOLATED_HOME="$WORKDIR/home"
+mkdir -p "$WORKDIR" "$ISOLATED_HOME"
 trap 'rm -rf "$WORKDIR"' EXIT
 
 PLUGINS_FILE="$WORKDIR/repo-plugins.json"
@@ -39,7 +43,11 @@ if [[ "$HEAD" != "9bb168c34349d7a53d24e9033ba8de6df69d9097" ]]; then
 fi
 
 echo "Installing $CLAUDE_CODE_PKG from $NPM_CONFIG_REGISTRY"
+# Keep real HOME for npm global prefix; isolate only Claude plugin config below.
 npm install --global "$CLAUDE_CODE_PKG"
+
+# Claude plugin commands use isolated HOME (see ISOLATED_HOME above).
+export HOME="$ISOLATED_HOME"
 
 repo_root="$(git -C "$VENDOR" rev-parse --show-toplevel)"
 claude plugin marketplace add "$repo_root"

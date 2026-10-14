@@ -13,8 +13,8 @@ env:
   DISABLE_TELEMETRY: "1"
   DO_NOT_TRACK: "1"
   AZURE_MCP_COLLECT_TELEMETRY: "false"
-  NPM_CONFIG_REGISTRY: https://registry.npmjs.org
-  npm_config_registry: https://registry.npmjs.org
+  NPM_CONFIG_REGISTRY: "https://registry.npmjs.org"
+  npm_config_registry: "https://registry.npmjs.org"
 
 jobs:
   lab:
@@ -30,7 +30,7 @@ jobs:
           bun-version: "1.4.3"
 
       - name: Setup Node 24
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "24"
 
@@ -64,7 +64,7 @@ jobs:
       - name: No forbidden skill mirrors
         run: test ! -e .cursor/skills && test ! -e .agents/skills
 
-  upstream-claude-e2e:
+  upstream:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -77,14 +77,14 @@ jobs:
           bun-version: "1.4.3"
 
       - name: Setup Node 24
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "24"
 
       - name: Vendor microsoft/azure-skills at pin
         run: bash scripts/vendor-upstream.sh
 
-      - name: Claude marketplace E2E (no Microsoft registry)
+      - name: Claude marketplace E2E without Microsoft registry
         run: bash scripts/upstream-e2e-claude.sh
 
   security:
@@ -120,7 +120,7 @@ jobs:
       - name: osv-scanner on upstream landing-page lockfile
         run: ./osv-scanner scan --config osv-scanner.toml --lockfile vendor/azure-skills/landing-page/package-lock.json
 
-      - name: Setup Bun (skill checks)
+      - name: Setup Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: "1.4.3"
