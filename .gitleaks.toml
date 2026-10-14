@@ -2,3 +2,13 @@ title = "minilab-azure-skills-plugin"
 
 [extend]
 useDefault = true
+
+# vendor/ is script-cloned microsoft/azure-skills (gitignored). Upstream docs
+# include denial-probe examples like api-key=phase1-key-denial-probe that trip
+# generic-api-key under --no-git local scans. CI git mode only scans commits.
+[[allowlists]]
+description = "Vendored upstream clone + env example"
+paths = [
+  '''^vendor/''',
+  '''^\.env\.example$''',
+]

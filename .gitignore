@@ -58,6 +58,15 @@ Thumbs.db
 .agents/
 .cursor/skills/
 
+# skills CLI install artifact (re-installed by scripts/install-azure-prepare.sh)
+.claude/skills/azure-prepare/
+skills-lock.json
+
+# Generated reports (keep directory)
+reports/*.json
+reports/*.md
+!reports/.gitkeep
+
 # Local security tool binaries
 .gitleaks/
 tools/gitleaks

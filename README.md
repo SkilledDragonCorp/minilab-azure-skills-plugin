@@ -56,27 +56,21 @@ bun test
 bash scripts/upstream-e2e-claude.sh
 ```
 
-## Test results (local, Oct 13 2026)
+## Test results (local + CI)
 
-```text
-$ bun install && bun test && bun run check:skills && bun audit
-$ bash scripts/validate-all-skills.sh
-$ bash scripts/install-azure-prepare.sh
-$ bash scripts/upstream-e2e-claude.sh
-$ gitleaks detect --source . --redact --no-banner --config .gitleaks.toml
+| Check | Result |
+| --- | --- |
+| `bash scripts/validate-all-skills.sh` | OK — 91 SKILL.md (85 name+description, 6 allowlisted phase docs) |
+| `bash scripts/install-azure-prepare.sh` | OK — `azure-prepare` into `.claude/skills/` only |
+| `bun test` | 5 pass / 0 fail |
+| `bun run typecheck` / `bun run check:skills` | OK |
+| `bun audit` (public npm registry) | No vulnerabilities |
+| `bash scripts/upstream-e2e-claude.sh` | OK — 6 plugins add/install/enabled; public npm; isolated Claude `HOME` |
+| gitleaks 8.30.1 | OK |
+| osv-scanner 2.7.0 on `landing-page/package-lock.json` | No issues |
+| Mirror ban | `.cursor/skills` / `.agents/skills` absent |
 
-bun test v1.4.3
- 5 pass
- 0 fail
-Ran 5 tests across 4 files.
-
-validate-all-skills: OK (91 SKILL.md: 85 name+description, 6 allowlisted phase docs)
-install-azure-prepare: OK -> .claude/skills/azure-prepare/SKILL.md
-upstream-e2e-claude: OK (6 plugins installed+enabled; public npm only)
-bun audit: No vulnerabilities found
-gitleaks 8.30.1: no leaks found
-osv-scanner 2.7.0 on landing-page/package-lock.json: No issues found
-```
+CI workflow `env` sets only one of `NPM_CONFIG_REGISTRY` / `npm_config_registry` — Actions rejects both case variants together.
 
 ## Using these skills in Claude Code and Cursor
 
