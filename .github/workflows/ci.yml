@@ -14,8 +14,7 @@ permissions:
 env:
   DISABLE_TELEMETRY: "1"
   DO_NOT_TRACK: "1"
-  AZURE_MCP_COLLECT_TELEMETRY: "false"
-  NPM_CONFIG_REGISTRY: "https://registry.npmjs.org"
+  npm_config_registry: "https://registry.npmjs.org"
 
 jobs:
   lab:
