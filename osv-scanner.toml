@@ -1,0 +1,2 @@
+# Upstream microsoft/azure-skills@9bb168c34349 landing-page package-lock.json.
+# Lab does not patch upstream lockfiles; ignore only when a pin introduces known noise.

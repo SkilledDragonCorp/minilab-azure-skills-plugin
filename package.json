@@ -1,0 +1,26 @@
+{
+  "name": "@skilleddragon/minilab-azure-skills-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SkilledDragon minilab: vendor microsoft/azure-skills, validate 91 SKILL.md, Claude marketplace E2E",
+  "engines": {
+    "node": ">=24.0.0",
+    "bun": ">=1.2.0"
+  },
+  "scripts": {
+    "test": "bun test ./tests",
+    "vendor": "bash scripts/vendor-upstream.sh",
+    "validate:skills": "bash scripts/validate-all-skills.sh",
+    "install:azure-prepare": "bash scripts/install-azure-prepare.sh",
+    "upstream:e2e": "bash scripts/upstream-e2e-claude.sh",
+    "check:skills": "bun run scripts/check-skills-frontmatter.ts",
+    "typecheck": "tsc --noEmit",
+    "audit": "bun audit",
+    "report": "bun run scripts/report.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.3",
+    "typescript": "5.9.3"
+  }
+}

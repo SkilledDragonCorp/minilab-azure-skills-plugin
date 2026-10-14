@@ -1,0 +1,4 @@
+title = "minilab-azure-skills-plugin"
+
+[extend]
+useDefault = true
